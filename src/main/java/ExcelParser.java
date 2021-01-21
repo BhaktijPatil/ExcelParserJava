@@ -20,12 +20,13 @@ public class ExcelParser {
 
         // Read Excel sheet
         String fileLocation = "exceldata/Financial Sample.xlsx";
-//        String fileLocation = "exceldata/sampleexcel.xlsx";
+        //String fileLocation = "exceldata/sampleexcel.xlsx";
 
+        ExcelReader excelReader = new ExcelReader();
         HashMap errorMap = new HashMap();
 
         try {
-            XSSFSheet sheet = getSheetAtIndex(fileLocation, 0);
+            Sheet sheet = excelReader.getSheetAtIndex(fileLocation, 0, ExcelReader.XLSX);
             printSheet(sheet);
 
             // Find validation errors
@@ -63,17 +64,10 @@ public class ExcelParser {
         return errorMap;
     }
 
-    // Function to read an excel sheet given the file location and sheet index
-    private static XSSFSheet getSheetAtIndex(String excelFileLoc, int index) throws IOException {
-        FileInputStream fileInputStream = new FileInputStream(excelFileLoc);
-        // Read excel file
-        XSSFWorkbook wb = new XSSFWorkbook(fileInputStream);
-        // Get sheet by sheet index
-        return wb.getSheetAt(index);
-    }
+
 
     // Function to print sheet
-    private static void printSheet(XSSFSheet sheet) {
+    private static void printSheet(Sheet sheet) {
         // Print column headers
         System.out.print("\t");
         for (Cell cell : sheet.getRow(0))

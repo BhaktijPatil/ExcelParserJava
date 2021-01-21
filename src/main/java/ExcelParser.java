@@ -1,24 +1,15 @@
-import org.apache.commons.logging.Log;
-import org.apache.poi.ss.formula.functions.Column;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellReference;
-import org.apache.poi.xssf.usermodel.XSSFSheet;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.Formatter;
 import java.util.HashMap;
-import java.util.Map;
-import java.util.logging.Logger;
 
 
 public class ExcelParser {
 
     private static ExcelReader excelReader = new ExcelReader();
-    private static int headerRowIndex;
-    private static int headerColumnIndex;
+    private static TableParser tableParser = new TableParser();
+    private static int headerRowIndex = 2;
+    private static int headerColumnIndex = 1;
     private static HashMap errorMap = new HashMap();
     private static String fileLocation = "exceldata/Financial Sample.xlsx";
 //    private static String fileLocation = "exceldata/Sample Excel.xlsx";
@@ -30,7 +21,8 @@ public class ExcelParser {
             // Read Excel sheet
 //             sheet = excelReader.getSheetAtIndex(fileLocation, 0, ExcelReader.XLSX);
             sheet = excelReader.getSheetByName(fileLocation, "Formatted", ExcelReader.XLSX);
-            excelReader.displaySheet(sheet);
+            SpreadsheetTable tableData = tableParser.parse(sheet, headerRowIndex, headerColumnIndex);
+//            excelReader.displaySheet(sheet, headerRowIndex);
 
         } catch (IOException ioException) {
             System.out.println("Excel Sheet not found at given location. ERROR : " + ioException);

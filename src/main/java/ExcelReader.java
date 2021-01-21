@@ -3,6 +3,7 @@
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.*;
 
+import org.apache.poi.ss.util.CellReference;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.FileInputStream;
@@ -30,12 +31,12 @@ public class ExcelReader {
     }
 
     // Function to print sheet
-    public void displaySheet(Sheet sheet) {
-        System.out.println(sheet.getSheetName() + "\n");
+    public void displaySheet(Sheet sheet, int headerRowIndex) {
+        System.out.println("\n\nSheet Name : " + sheet.getSheetName());
         // Print column headers
         System.out.print("\t");
-        for (Cell cell : sheet.getRow(0))
-            System.out.print(String.format("%-25s", cell.getColumnIndex()));
+        for (Cell cell : sheet.getRow(headerRowIndex))
+            System.out.print(String.format("%-25s", CellReference.convertNumToColString(cell.getColumnIndex())));
         // Print rows
         for (Row row : sheet) {
             System.out.print("\n" + row.getRowNum() + "\t");
@@ -71,5 +72,10 @@ public class ExcelReader {
                 }
             }
         }
+    }
+
+    // Function to print sheet
+    public void displaySheet(Sheet sheet) {
+        displaySheet(sheet, sheet.getTopRow());
     }
 }

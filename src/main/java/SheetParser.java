@@ -7,31 +7,56 @@ import org.apache.poi.ss.util.CellReference;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
-public class ExcelReader {
+public class SheetParser {
 
     public static final int XLS = 0;
     public static final int XLSX = 1;
 
-    // Function to read an excel sheet given the file location and sheet index
-    public Sheet getSheetAtIndex(String excelFileLoc, int index, int excelFormat) throws IOException {
+    public Sheet sheet;
+
+    // Read an excel sheet given the file location and sheet index
+    public SheetParser(String excelFileLoc, int index, int excelFormat) throws IOException {
         FileInputStream fileInputStream = new FileInputStream(excelFileLoc);
         Workbook workbook = excelFormat == XLS ? new HSSFWorkbook(fileInputStream) : new XSSFWorkbook(fileInputStream);
         // Get sheet by sheet index
-        return workbook.getSheetAt(index);
+        sheet = workbook.getSheetAt(index);
     }
 
-    // Function to read an excel sheet given the file location and sheet name
-    public Sheet getSheetByName(String excelFileLoc, String sheetName, int excelFormat) throws IOException {
+    // Read an excel sheet given the file location and sheet name
+    public SheetParser(String excelFileLoc, String sheetName, int excelFormat) throws IOException {
         FileInputStream fileInputStream = new FileInputStream(excelFileLoc);
         Workbook workbook = excelFormat == XLS ? new HSSFWorkbook(fileInputStream) : new XSSFWorkbook(fileInputStream);
         // Get sheet by sheet index
-        return workbook.getSheet(sheetName);
+        sheet = workbook.getSheet(sheetName);
     }
+
+    // Constructor to initialize a sheet directly
+    public SheetParser(Sheet sheet)
+    {
+        this.sheet = sheet;
+    }
+
+
+//    public Sheet getSheetAtIndex(String excelFileLoc, int index, int excelFormat) throws IOException {
+//        FileInputStream fileInputStream = new FileInputStream(excelFileLoc);
+//        Workbook workbook = excelFormat == XLS ? new HSSFWorkbook(fileInputStream) : new XSSFWorkbook(fileInputStream);
+//        // Get sheet by sheet index
+//        return workbook.getSheetAt(index);
+//    }
+//
+//    // Function to read an excel sheet given the file location and sheet name
+//    public Sheet getSheetByName(String excelFileLoc, String sheetName, int excelFormat) throws IOException {
+//        FileInputStream fileInputStream = new FileInputStream(excelFileLoc);
+//        Workbook workbook = excelFormat == XLS ? new HSSFWorkbook(fileInputStream) : new XSSFWorkbook(fileInputStream);
+//        // Get sheet by sheet index
+//        return workbook.getSheet(sheetName);
+//    }
 
     // Function to print sheet
-    public void displaySheet(Sheet sheet, int headerRowIndex) {
+    public void displaySheet(int headerRowIndex) {
         System.out.println("\n\nSheet Name : " + sheet.getSheetName());
         // Print column headers
         System.out.print("\t");
@@ -45,6 +70,11 @@ public class ExcelReader {
             }
         }
         System.out.println("\n");
+    }
+
+    // Function to print sheet
+    public void displaySheet() {
+        displaySheet(sheet.getTopRow());
     }
 
     // Function to print Cell w/ proper formatting
@@ -80,21 +110,16 @@ public class ExcelReader {
         }
     }
 
-    // Function to print sheet
-    public void displaySheet(Sheet sheet) {
-        displaySheet(sheet, sheet.getTopRow());
-    }
-
     // Function to display contents of a cell
-    public void displayCellContent(int rowNum, int colNum, Sheet sheet) {
-        Cell cell = fetchCell(rowNum, colNum, sheet);
+    public void displayCellContent(int rowNum, int colNum) {
+        Cell cell = fetchCell(rowNum, colNum);
         System.out.print("\nCell value at :\nRow : " + rowNum + "  Col : " + colNum + "  Value : ");
         displayCellValue(cell);
         System.out.println("\n");
     }
 
     // Function to fetch a cell from table given row and column IDs
-    public Cell fetchCell(int rowNum, int colNum, Sheet sheet) {
+    public Cell fetchCell(int rowNum, int colNum) {
         return sheet.getRow(rowNum).getCell(colNum);
     }
 }

@@ -24,7 +24,6 @@ public class TableParser {
         {
             for (int colNum = lastColIndex; colNum <= row.getLastCellNum(); colNum++) {
                 if (row.getCell(colNum) != null) {
-                    System.out.println(row.getRowNum() + "\t" + colNum);
                     row.removeCell(row.getCell(colNum));
                 }
             }

@@ -39,22 +39,6 @@ public class SheetParser {
         this.sheet = sheet;
     }
 
-
-//    public Sheet getSheetAtIndex(String excelFileLoc, int index, int excelFormat) throws IOException {
-//        FileInputStream fileInputStream = new FileInputStream(excelFileLoc);
-//        Workbook workbook = excelFormat == XLS ? new HSSFWorkbook(fileInputStream) : new XSSFWorkbook(fileInputStream);
-//        // Get sheet by sheet index
-//        return workbook.getSheetAt(index);
-//    }
-//
-//    // Function to read an excel sheet given the file location and sheet name
-//    public Sheet getSheetByName(String excelFileLoc, String sheetName, int excelFormat) throws IOException {
-//        FileInputStream fileInputStream = new FileInputStream(excelFileLoc);
-//        Workbook workbook = excelFormat == XLS ? new HSSFWorkbook(fileInputStream) : new XSSFWorkbook(fileInputStream);
-//        // Get sheet by sheet index
-//        return workbook.getSheet(sheetName);
-//    }
-
     // Function to print sheet
     public void displaySheet(int headerRowIndex) {
         System.out.println("\n\nSheet Name : " + sheet.getSheetName());

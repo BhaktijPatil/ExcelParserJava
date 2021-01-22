@@ -1,5 +1,6 @@
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellReference;
+
 import java.io.IOException;
 import java.util.HashMap;
 
@@ -21,25 +22,19 @@ public class ExcelParser {
             // Read Excel sheet
 //             sheet = excelReader.getSheetAtIndex(fileLocation, 0, ExcelReader.XLSX);
             sheet = excelReader.getSheetByName(fileLocation, "Formatted", ExcelReader.XLSX);
+
             SpreadsheetTable tableData = tableParser.parse(sheet, headerRowIndex, headerColumnIndex);
-//            excelReader.displaySheet(sheet, headerRowIndex);
+            tableData.displayTable();
+
+            int rowNum = 5;
+            int colNum = 1;
+            Cell cell = excelReader.fetchCell(rowNum, colNum, tableData.tableData);
+            excelReader.displayCellContent(rowNum, colNum, tableData.tableData);
+            tableData.displayCellContent("Sale Price", "Canada");
 
         } catch (IOException ioException) {
             System.out.println("Excel Sheet not found at given location. ERROR : " + ioException);
         }
-//        try {
-//
-//            printSheet(sheet);
-//
-//            // Find validation errors
-//            errorMap.putAll(validateIntegerRow(sheet.getRow(5), errorMap));
-//            errorMap.putAll(filterRowManuPrice300(sheet, errorMap));
-//
-//            System.out.println("\n\nERROR LOG :");
-//            System.out.println(errorMap);
-//        } catch (Exception e) {
-//            System.out.println("Excel Sheet not found at given location " + e);
-//        }
     }
 
     // Function to validate datatype in a column()
@@ -63,5 +58,19 @@ public class ExcelParser {
         }
         return errorMap;
     }
+
+    //        try {
+//
+//            printSheet(sheet);
+//
+//            // Find validation errors
+//            errorMap.putAll(validateIntegerRow(sheet.getRow(5), errorMap));
+//            errorMap.putAll(filterRowManuPrice300(sheet, errorMap));
+//
+//            System.out.println("\n\nERROR LOG :");
+//            System.out.println(errorMap);
+//        } catch (Exception e) {
+//            System.out.println("Excel Sheet not found at given location " + e);
+//        }
 
 }
